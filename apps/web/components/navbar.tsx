@@ -6,16 +6,18 @@ export async function NavBar() {
 
   return (
     <div className="flex items-center h-14 px-4 border-b">
-      <Link className="mr-4" href="/">
-        <img
-          src="/favicon.ico"
-          alt="The Wallet-Audit Icon"
-          className="h-8 w-8"
-        />
-        <span className="sr-only">Wallet Audit</span>
-      </Link>
-      <div className="flex-1 text-center text-lg font-semibold">
-        Wallet Audit
+      <div className="flex items-center justify-center">
+        <Link className="mr-4" href="/">
+          <img
+            src="/favicon.ico"
+            alt="The Wallet-Audit Icon"
+            className="h-8 w-8"
+          />
+          <span className="sr-only">Wallet Audit</span>
+        </Link>
+        <div className="flex-1 text-center text-lg font-semibold mx-auto">
+          Wallet Audit
+        </div>
       </div>
       <div className="ml-auto flex gap-2">
         {!pb.authStore.isValid && (
