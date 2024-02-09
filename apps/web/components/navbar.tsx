@@ -10,11 +10,11 @@ export async function NavBar() {
         <img
           src="/favicon.ico"
           alt="The Wallet-Audit Icon"
-          className="h-6 w-6"
+          className="h-8 w-8"
         />
         <span className="sr-only">Wallet Audit</span>
       </Link>
-      <div className="flex-1 text-center text-sm font-semibold">
+      <div className="flex-1 text-center text-lg font-semibold">
         Wallet Audit
       </div>
       <div className="ml-auto flex gap-2">
