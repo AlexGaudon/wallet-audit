@@ -1,3 +1,19 @@
+export type Transaction = {
+  amount: number;
+  category: string;
+  collectionId: string;
+  collectionName: string;
+  created: Date;
+  date: Date;
+  expand: {
+    category: Category;
+  };
+  id: string;
+  updated: Date;
+  user: string;
+  vendor: string;
+};
+
 export type Keyword = {
   category: string;
   collectionId: string;

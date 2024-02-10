@@ -3,8 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Category, Keyword } from "./definitions";
+import { ClientResponseError } from "pocketbase";
+import { Category, Keyword, Transaction } from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
+
+export async function deleteTransaction(transactionId: string) {
+  const pb = await initPocketbaseFromCookie();
+
+  await pb.collection("transactions").delete(transactionId);
+
+  revalidatePath("/transactions");
+}
 
 export async function deleteCategory(categoryId: string) {
   const pb = await initPocketbaseFromCookie();
@@ -23,7 +32,7 @@ export async function createKeyword(
 
   const pb = await initPocketbaseFromCookie();
   const session = await getSession();
-
+  let assignResult;
   try {
     const keywordResult = await pb.collection<Keyword>("keywords").create({
       user: session?.id,
@@ -31,20 +40,33 @@ export async function createKeyword(
       keyword,
     });
 
-    console.log(keywordResult);
-
-    const assignResult = await pb
+    assignResult = await pb
       .collection<Category>("categories")
       .update(categoryId as string, {
         "keywords+": keywordResult.id,
       });
 
-    console.log(assignResult);
-
     revalidatePath("/categories");
   } catch (e) {
     console.error(e);
-    return (e as Error).message;
+    return "Error creating keyword";
+  }
+  try {
+    const transactions = await pb
+      .collection<Transaction>("transactions")
+      .getFullList({
+        filter: `vendor="${keyword}" && user="${session?.id}"`,
+      });
+
+    for (let transaction of transactions) {
+      await pb.collection("transactions").update(transaction.id, {
+        category: assignResult?.id,
+      });
+    }
+
+    console.log("TRANSACTIONS WITH VENDOR:", transactions);
+  } catch (e) {
+    return "Error assigning category to transactions.";
   }
 
   return "ok";
@@ -132,4 +154,103 @@ export async function signOut() {
   cookies().delete("pb_auth");
 
   redirect("/signin");
+}
+
+export async function importTransactions(fileName: string, data: string) {
+  const session = await getSession();
+
+  if (!session) {
+    return "Unauthorized";
+  }
+
+  let statements = data.split("<STMTTRN>");
+
+  let transactions: string[] = [];
+
+  const transactionData: ImportTransaction[] = [];
+
+  type ImportTransaction = {
+    DTPOSTED: string;
+    TRNAMT: string;
+    FITID: string;
+    NAME: string;
+  };
+
+  for (let i = 1; i < statements.length; i++) {
+    const stmt = statements[i];
+
+    const parts = stmt.split("</STMTTRN");
+    if (parts.length > 1) {
+      transactions.push(parts[0].replaceAll("\n", ""));
+    }
+  }
+
+  for (let line of transactions) {
+    let parts = line.split("<").filter((x) => x.trim() !== "");
+    let temp: any = {};
+    for (let part of parts) {
+      let split = part.split(">");
+      if (split[0] === "DTPOSTED") {
+        let date = split[1].substring(0, 8).split("");
+        date.splice(4, 0, "-");
+        date.splice(7, 0, "-");
+        temp[split[0]] = date.join("");
+      } else {
+        temp[split[0]] = split[1];
+      }
+    }
+
+    if (temp satisfies ImportTransaction) {
+      transactionData.push(temp);
+    }
+  }
+
+  const pb = await initPocketbaseFromCookie();
+
+  for (let td of transactionData) {
+    const newTransaction = {
+      user: session.id,
+      category: "",
+      amount: Number(td.TRNAMT) * 100,
+      vendor: td.NAME,
+      date: new Date(td.DTPOSTED),
+      externalId: td.FITID,
+    };
+    console.log(newTransaction);
+    try {
+      const category = await getCategoryFromVendorName(newTransaction.vendor);
+      console.log(category);
+      if (category !== undefined) {
+        newTransaction.category = category;
+      }
+      await pb.collection("transactions").create(newTransaction);
+    } catch (e) {
+      const error = e as ClientResponseError;
+
+      console.error(JSON.stringify(error));
+    }
+  }
+
+  revalidatePath("/transactions");
+}
+
+export async function getCategoryFromVendorName(vendorName: string) {
+  const session = await getSession();
+
+  if (!session) {
+    return "Unauthorized";
+  }
+
+  const pb = await initPocketbaseFromCookie();
+  try {
+    const keywords = await pb
+      .collection<Keyword>("keywords")
+      .getFirstListItem(`keyword="${vendorName}" && user="${session?.id}"`);
+
+    if (keywords?.category !== undefined) {
+      return keywords.category;
+    }
+  } catch (e) {
+    return undefined;
+  }
 }

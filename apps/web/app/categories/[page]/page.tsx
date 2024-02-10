@@ -1,11 +1,9 @@
 import { getSession, initPocketbaseFromCookie } from "@/lib/pb";
 import { redirect } from "next/navigation";
 
-import {
-  CategoriesDisplay,
-  CategoriesPagination,
-} from "@/components/categories-display";
+import { CategoriesDisplay } from "@/components/categories-display";
 import CreateCategoryForm from "@/components/create-category-form";
+import { Paginator } from "@/components/pagination";
 import { type Category } from "@/lib/definitions";
 
 export default async function CategoriesPage({
@@ -39,7 +37,8 @@ export default async function CategoriesPage({
       <div className="grid grid-cols-2 min-w-full w-full items-center justify-center">
         <CreateCategoryForm />
         <div>
-          <CategoriesPagination
+          <Paginator
+            url="categories"
             page={pageAsNumber}
             totalPages={categories.totalPages}
           />

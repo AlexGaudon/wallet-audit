@@ -18,8 +18,6 @@ func main() {
 		return nil
 	})
 
-	// app.OnRecordBeforeCreateRequest("")
-
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}

@@ -2,10 +2,8 @@
 import { deleteCategory } from "@/lib/actions";
 import { type Category } from "@/lib/definitions";
 import { TrashIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import CreateKeywordForm from "./create-keyword-form";
 import { Keyword } from "./keyword";
-import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
 function Category({ category }: { category: Category }) {
@@ -13,7 +11,6 @@ function Category({ category }: { category: Category }) {
     <Card className="grid grid-cols-2">
       <CardHeader>
         <div className="flex items-center">
-          <span className="text-2xl">{category.name}</span>
           <button
             className="w-8"
             onClick={async () => {
@@ -26,6 +23,7 @@ function Category({ category }: { category: Category }) {
           >
             <TrashIcon className="w-full" />
           </button>
+          <span className="text-2xl">{category.name}</span>
         </div>
       </CardHeader>
       <CardContent className="mt-4">
@@ -35,38 +33,6 @@ function Category({ category }: { category: Category }) {
         <CreateKeywordForm categoryId={category.id} />
       </CardContent>
     </Card>
-  );
-}
-
-export function CategoriesPagination({
-  page,
-  totalPages,
-}: {
-  page: number;
-  totalPages: number;
-}) {
-  const router = useRouter();
-
-  return (
-    <>
-      <Button
-        disabled={!(page > 1)}
-        onClick={() => {
-          router.push(`/categories/${page - 1}`);
-        }}
-      >
-        {"<"}
-      </Button>
-      <span className="mx-2">Page {page}</span>
-      <Button
-        disabled={!(page < totalPages)}
-        onClick={() => {
-          router.push(`/categories/${page + 1}`);
-        }}
-      >
-        {">"}
-      </Button>
-    </>
   );
 }
 

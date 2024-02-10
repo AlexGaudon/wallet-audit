@@ -7,7 +7,12 @@ const inter = Inter({ subsets: ["latin"] });
 import Link from "next/link";
 
 import { initPocketbaseFromCookie } from "@/lib/pb";
-import { LayoutDashboardIcon, TagsIcon } from "lucide-react";
+import {
+  FileIcon,
+  FilesIcon,
+  LayoutDashboardIcon,
+  TagsIcon,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Wallet Audit",
@@ -76,10 +81,28 @@ export default async function RootLayout({
                   <li>
                     <Link
                       className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
-                      href="/categories"
+                      href="/categories/1"
                     >
                       <TagsIcon />
                       <span className="ml-3">Categories</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
+                      href="/transactions/1"
+                    >
+                      <FileIcon />
+                      <span className="ml-3">Transactions</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
+                      href="/import"
+                    >
+                      <FilesIcon />
+                      <span className="ml-3">Import</span>
                     </Link>
                   </li>
                 </ul>
