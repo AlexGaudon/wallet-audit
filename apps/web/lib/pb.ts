@@ -1,6 +1,14 @@
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 import Pocketbase from "pocketbase";
+import { User } from "./definitions";
+
+export async function getSession() {
+  const pb = await initPocketbaseFromCookie();
+  const authUser = pb.authStore.model as User;
+
+  return authUser;
+}
 
 export async function initPocketbaseFromCookie() {
   const pb = new Pocketbase(process.env.NEXT_PUBLIC_API_URL);

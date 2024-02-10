@@ -17,7 +17,7 @@ export async function signIn(
 
   try {
     const pb = await initPocketbaseFromCookie();
-    const auth = await pb
+    await pb
       .collection("users")
       .authWithPassword(email as string, password as string);
 
@@ -38,22 +38,21 @@ export async function signUp(
 ) {
   const pb = await initPocketbaseFromCookie();
 
-  const name = formData.get("name");
+  const name = formData.get("displayName");
   const email = formData.get("email");
   const password = formData.get("password");
   try {
-    const res = await pb.collection("users").create({
+    await pb.collection("users").create({
       email: email,
       password: password,
       passwordConfirm: password,
       name: name,
     });
-    console.log(res);
     return "ok";
   } catch (e) {
     const error = e as Error;
     console.error(e);
-    return error.message;
+    return "A user with this email already exists.";
   }
 }
 

@@ -1,9 +1,16 @@
 import { SignInForm } from "@/components/sign-in-form";
+import { getSession } from "@/lib/pb";
+import { redirect } from "next/navigation";
 
 export default async function SignInPage() {
+  const session = await getSession();
+  if (session) {
+    redirect("/");
+  }
+
   return (
-    <main className="mt-4">
-      <SignInForm />;
+    <main className="mx-auto w-1/3 mt-4">
+      <SignInForm />
     </main>
   );
 }
