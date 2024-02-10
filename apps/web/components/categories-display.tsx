@@ -11,37 +11,41 @@ function Category({ category }: { category: Category }) {
   );
 }
 
-export default function CategoriesDisplay({
-  categories,
+export function CategoriesPagination({
   page,
   totalPages,
 }: {
-  categories: Category[];
   page: number;
   totalPages: number;
 }) {
   const router = useRouter();
+
   return (
     <>
-      <div className="float-right ml-auto">
-        <Button
-          disabled={!(page > 1)}
-          onClick={() => {
-            router.push(`/categories/${page - 1}`);
-          }}
-        >
-          {"<"}
-        </Button>
-        <span className="mx-2">Page {page}</span>
-        <Button
-          disabled={!(page < totalPages)}
-          onClick={() => {
-            router.push(`/categories/${page + 1}`);
-          }}
-        >
-          {">"}
-        </Button>
-      </div>
+      <Button
+        disabled={!(page > 1)}
+        onClick={() => {
+          router.push(`/categories/${page - 1}`);
+        }}
+      >
+        {"<"}
+      </Button>
+      <span className="mx-2">Page {page}</span>
+      <Button
+        disabled={!(page < totalPages)}
+        onClick={() => {
+          router.push(`/categories/${page + 1}`);
+        }}
+      >
+        {">"}
+      </Button>
+    </>
+  );
+}
+
+export function CategoriesDisplay({ categories }: { categories: Category[] }) {
+  return (
+    <>
       {categories.map((category) => (
         <Category category={category} />
       ))}

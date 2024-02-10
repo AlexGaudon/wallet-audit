@@ -1,7 +1,10 @@
-import CategoriesDisplay from "@/components/categories-display";
 import { getSession, initPocketbaseFromCookie } from "@/lib/pb";
 import { redirect } from "next/navigation";
 
+import {
+  CategoriesDisplay,
+  CategoriesPagination,
+} from "@/components/categories-display";
 import CreateCategoryForm from "@/components/create-category-form";
 import { type Category } from "@/lib/definitions";
 
@@ -24,7 +27,7 @@ export default async function CategoriesPage({
     .collection<Category>("categories")
     .getList(pageAsNumber, 5);
 
-  if (res.items.length === 0) {
+  if (res.items.length === 0 && res.totalPages > 0) {
     redirect("/categories/1");
   }
 
@@ -34,6 +37,12 @@ export default async function CategoriesPage({
 
       <div className="grid grid-cols-2 min-w-full w-full items-center justify-center">
         <CreateCategoryForm />
+        <div>
+          <CategoriesPagination
+            page={pageAsNumber}
+            totalPages={res.totalPages}
+          />
+        </div>
 
         <CategoriesDisplay
           categories={res.items}

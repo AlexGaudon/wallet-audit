@@ -19,23 +19,32 @@ export default function CreateCategoryForm({
   const { toast } = useToast();
 
   useEffect(() => {
-    if (code === "ok") {
-      ref.current?.reset();
-    }
-
-    if (code === "failed") {
+    if (code?.startsWith("failed")) {
       toast({
-        variant: "destructive",
         description: "A category with this name already exists.",
+        variant: "destructive",
       });
-      ref.current?.reset();
     }
   }, [code]);
 
   return (
     <div className="px-2 py-4">
       <Toaster />
-      <form ref={ref} action={action} className="flex">
+      <form
+        ref={ref}
+        action={async (formData) => {
+          action(formData);
+
+          if (code?.startsWith("failed")) {
+            toast({
+              description: code,
+            });
+          }
+
+          ref.current?.reset();
+        }}
+        className="flex"
+      >
         <Input name="categoryName" type="text" placeholder="New Category" />
         <Button>
           <CornerDownLeftIcon />

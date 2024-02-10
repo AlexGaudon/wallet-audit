@@ -17,18 +17,16 @@ export async function createCategory(
   const session = await getSession();
 
   try {
-    await pb.collection<Category>("categories").create({
+    const res = await pb.collection<Category>("categories").create({
       name,
       user: session?.id,
     });
+    revalidatePath("/categories/");
+    return res.id;
   } catch (e) {
     console.log(e);
-    return "failed";
+    return `failed ${name}`;
   }
-
-  revalidatePath("/categories/");
-
-  return "ok";
 }
 
 export async function signIn(

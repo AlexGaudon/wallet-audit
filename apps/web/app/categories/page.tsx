@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+"use client";
+import { useRouter } from "next/navigation";
 
 export default function CategoriesPage() {
-  redirect("/categories/1");
+  const router = useRouter();
+  router.push(`/categories/1`);
 }
