@@ -10,6 +10,7 @@ export function ImportForm() {
     <form>
       <Input
         type="file"
+        accept=".qfx"
         onChange={(e) => {
           let reader = new FileReader();
 
