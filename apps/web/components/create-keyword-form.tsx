@@ -1,5 +1,5 @@
 "use client";
-import { createCategory } from "@/lib/actions";
+import { createKeyword } from "@/lib/actions";
 import { CornerDownLeftIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
@@ -8,12 +8,14 @@ import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
 import { useToast } from "./ui/use-toast";
 
-export default function CreateCategoryForm({
+export default function CreateKeywordForm({
+  categoryId,
   className,
 }: {
+  categoryId: string;
   className?: string;
 }) {
-  const [code, action] = useFormState(createCategory, undefined);
+  const [code, action] = useFormState(createKeyword, undefined);
   const ref = useRef<HTMLFormElement>(null);
 
   const { toast } = useToast();
@@ -21,7 +23,7 @@ export default function CreateCategoryForm({
   useEffect(() => {
     if (code?.startsWith("failed")) {
       toast({
-        description: "A category with this name already exists.",
+        description: "A keyword with this name already exists.",
         variant: "destructive",
       });
     }
@@ -39,7 +41,13 @@ export default function CreateCategoryForm({
         }}
         className="flex"
       >
-        <Input name="categoryName" type="text" placeholder="New Category" />
+        <input
+          className="hidden"
+          readOnly
+          value={categoryId}
+          name="categoryId"
+        />
+        <Input name="keywordName" type="text" placeholder="New Keyword" />
         <Button>
           <CornerDownLeftIcon />
         </Button>

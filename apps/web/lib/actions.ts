@@ -3,8 +3,52 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Category } from "./definitions";
+import { Category, Keyword } from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
+
+export async function deleteCategory(categoryId: string) {
+  const pb = await initPocketbaseFromCookie();
+
+  await pb.collection("categories").delete(categoryId);
+
+  revalidatePath("/categories");
+}
+
+export async function createKeyword(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  const categoryId = formData.get("categoryId");
+  const keyword = formData.get("keywordName");
+
+  const pb = await initPocketbaseFromCookie();
+  const session = await getSession();
+
+  try {
+    const keywordResult = await pb.collection<Keyword>("keywords").create({
+      user: session?.id,
+      category: categoryId,
+      keyword,
+    });
+
+    console.log(keywordResult);
+
+    const assignResult = await pb
+      .collection<Category>("categories")
+      .update(categoryId as string, {
+        "keywords+": keywordResult.id,
+      });
+
+    console.log(assignResult);
+
+    revalidatePath("/categories");
+  } catch (e) {
+    console.error(e);
+    return (e as Error).message;
+  }
+
+  return "ok";
+}
 
 export async function createCategory(
   prevState: string | undefined,

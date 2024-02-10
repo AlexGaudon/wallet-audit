@@ -23,33 +23,29 @@ export default async function CategoriesPage({
 
   const pageAsNumber = Number.parseInt(params.page, 10);
 
-  let res = await pb
+  const categories = await pb
     .collection<Category>("categories")
-    .getList(pageAsNumber, 5);
+    .getList(pageAsNumber, 4, {
+      expand: "keywords",
+    });
 
-  if (res.items.length === 0 && res.totalPages > 0) {
+  if (categories.items.length === 0 && categories.totalPages > 0) {
     redirect("/categories/1");
   }
 
   return (
     <main className="m-4 w-full">
       <h1 className="font-bold text-2xl mb-2">Categories</h1>
-
       <div className="grid grid-cols-2 min-w-full w-full items-center justify-center">
         <CreateCategoryForm />
         <div>
           <CategoriesPagination
             page={pageAsNumber}
-            totalPages={res.totalPages}
+            totalPages={categories.totalPages}
           />
         </div>
-
-        <CategoriesDisplay
-          categories={res.items}
-          page={res.page}
-          totalPages={res.totalPages}
-        />
       </div>
+      <CategoriesDisplay categories={categories.items} />
     </main>
   );
 }
