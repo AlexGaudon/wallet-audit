@@ -1,8 +1,35 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { initPocketbaseFromCookie } from "./pb";
+import { Category } from "./definitions";
+import { getSession, initPocketbaseFromCookie } from "./pb";
+
+export async function createCategory(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  const name = formData.get("categoryName");
+
+  const pb = await initPocketbaseFromCookie();
+
+  const session = await getSession();
+
+  try {
+    await pb.collection<Category>("categories").create({
+      name,
+      user: session?.id,
+    });
+  } catch (e) {
+    console.log(e);
+    return "failed";
+  }
+
+  revalidatePath("/categories/");
+
+  return "ok";
+}
 
 export async function signIn(
   prevState: string | undefined,

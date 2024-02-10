@@ -11,3 +11,13 @@ export type User = {
   username: string;
   verified: boolean;
 };
+
+export type Category = {
+  collectionId: string;
+  collectionName: string;
+  created: Date;
+  id: string;
+  name: string;
+  updated: Date;
+  user: string;
+};

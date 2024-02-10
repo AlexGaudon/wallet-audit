@@ -25,10 +25,13 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className="flex h-screen bg-gray-100">
           <nav className="min-w-64 w-64 bg-white shadow-md">
-            <div className="px-8 py-4">
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Wallet Audit
-              </h2>
+            <div className="px-8 py-4 flex">
+              <div className="items-center justify-center flex">
+                <img src="/favicon.ico" className="w-8 h-8" />
+                <h2 className="ml-2 text-2xl font-semibold text-gray-900">
+                  <Link href="/">Wallet Audit</Link>
+                </h2>
+              </div>
             </div>
             <div className="m-2 items-center justify-center flex">
               {!pb.authStore.isValid && (

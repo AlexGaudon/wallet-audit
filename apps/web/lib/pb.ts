@@ -5,6 +5,9 @@ import { User } from "./definitions";
 
 export async function getSession() {
   const pb = await initPocketbaseFromCookie();
+  if (!pb.authStore.isValid) {
+    return undefined;
+  }
   const authUser = pb.authStore.model as User;
 
   return authUser;
@@ -23,7 +26,6 @@ export async function initPocketBaseFromRequest(request: NextRequest) {
 
   // load the store data from the request cookie string
   pb.authStore.loadFromCookie(request?.cookies.get("pb_auth")?.value || "");
-
   // send back the default 'pb_auth' cookie to the client with the latest store state
   pb.authStore.onChange(() => {
     request.cookies.set("pb_auth", pb.authStore.exportToCookie());
