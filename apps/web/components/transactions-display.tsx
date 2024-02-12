@@ -1,7 +1,7 @@
 "use client";
 import { createKeyword, deleteTransaction } from "@/lib/actions";
 import { Category, Transaction } from "@/lib/definitions";
-import { cn } from "@/lib/utils";
+import { cn, displayAmount } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -29,7 +29,6 @@ function Transaction({
   transaction: Transaction;
   categories: Category[];
 }) {
-  const displayAmount = (transaction.amount / 100).toFixed(2);
   const categoryName = transaction.expand?.category?.name;
 
   const [category, setCategory] = useState("");
@@ -112,7 +111,7 @@ function Transaction({
           )}
         </span>
       </TableCell>
-      <TableCell>${displayAmount}</TableCell>
+      <TableCell>${displayAmount(transaction.amount)}</TableCell>
     </TableRow>
   );
 }

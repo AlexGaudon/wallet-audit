@@ -6,6 +6,61 @@ import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import { Category, Keyword, Transaction } from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
+import { getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
+
+export async function getCategorizedSpendingForPeriod(period: string) {
+  const pb = await initPocketbaseFromCookie();
+
+  const periodDate = new Date(period);
+
+  const first = getFirstDayOfMonth(periodDate);
+  const last = getLastDayOfMonth(periodDate);
+
+  const transactions = await pb
+    .collection<Transaction>("transactions")
+    .getFullList({
+      filter: `date >= "${first}" && date <= "${last}"`,
+      sort: "+date",
+      expand: "category",
+    });
+
+  const grouped = new Map<string, number>();
+
+  for (let transaction of transactions) {
+    if (!transaction.expand?.category?.name) {
+      continue;
+    }
+    const cName = transaction.expand.category.name;
+
+    if (!grouped.get(cName)) {
+      grouped.set(cName, 0);
+    }
+
+    grouped.set(cName, grouped.get(cName)! + transaction.amount);
+  }
+
+  return grouped;
+}
+
+export async function getTopSpendingThisMonth() {
+  const pb = await initPocketbaseFromCookie();
+
+  const transactions = await pb
+    .collection<Transaction>("transactions")
+    .getFullList({
+      filter: "date >= @monthStart && date <= @monthEnd",
+      sort: "+amount",
+      expand: "category",
+    });
+
+  const filtered = transactions.filter(
+    (x) =>
+      x.expand.category.name !== "Investments" &&
+      x.expand.category.name !== "Transfer"
+  );
+
+  return filtered.slice(0, 3);
+}
 
 export async function deleteTransaction(transactionId: string) {
   const pb = await initPocketbaseFromCookie();

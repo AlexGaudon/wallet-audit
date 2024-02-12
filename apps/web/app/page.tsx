@@ -1,6 +1,7 @@
+import { Dashboard } from "@/components/dashboard";
 import { getSession } from "@/lib/pb";
 
-const WalletAuditDashboard = () => {
+const WalletAuditLanding = () => {
   return (
     <main className="flex-1">
       <section className="pt-12 md:pt-24 lg:pt-32">
@@ -71,16 +72,9 @@ export default async function Home() {
 
   return (
     <main className="w-full">
-      {session && (
-        <>
-          <h1 className="font text-lg">
-            Hello <span className="text-orange-600">{session?.name}</span>
-          </h1>
-          <h1>DASHBOARD</h1>
-        </>
-      )}
+      {session && <Dashboard />}
 
-      {!session && <WalletAuditDashboard />}
+      {!session && <WalletAuditLanding />}
     </main>
   );
 }
