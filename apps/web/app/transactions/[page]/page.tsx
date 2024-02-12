@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { Paginator } from "@/components/pagination";
 import { TransactionsDisplay } from "@/components/transactions-display";
-import { Transaction } from "@/lib/definitions";
+import { Category, Transaction } from "@/lib/definitions";
 
 export default async function TransactionsPage({
   params,
@@ -27,6 +27,8 @@ export default async function TransactionsPage({
       sort: "-date",
     });
 
+  const categories = await pb.collection<Category>("categories").getFullList();
+
   if (transactions.items.length === 0 && transactions.totalPages > 0) {
     redirect("/transactions/1");
   }
@@ -43,7 +45,10 @@ export default async function TransactionsPage({
           />
         </div>
       </div>
-      <TransactionsDisplay transactions={transactions.items} />
+      <TransactionsDisplay
+        transactions={transactions.items}
+        categories={categories}
+      />
     </main>
   );
 }

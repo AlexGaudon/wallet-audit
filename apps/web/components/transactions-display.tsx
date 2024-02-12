@@ -1,13 +1,39 @@
 "use client";
-import { deleteTransaction } from "@/lib/actions";
-import { Transaction } from "@/lib/definitions";
+import { createKeyword, deleteTransaction } from "@/lib/actions";
+import { Category, Transaction } from "@/lib/definitions";
 import { cn } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { Table, TableBody, TableCell, TableRow } from "./ui/table";
 
-function Transaction({ transaction }: { transaction: Transaction }) {
+function Transaction({
+  transaction,
+  categories,
+}: {
+  transaction: Transaction;
+  categories: Category[];
+}) {
   const displayAmount = (transaction.amount / 100).toFixed(2);
   const categoryName = transaction.expand?.category?.name;
+
+  const [category, setCategory] = useState("");
+
   return (
     <TableRow>
       <TableCell>
@@ -38,7 +64,52 @@ function Transaction({ transaction }: { transaction: Transaction }) {
             }
           )}
         >
-          {categoryName ? categoryName : "Uncategorized"}
+          {categoryName ? (
+            categoryName
+          ) : (
+            <Dialog>
+              <DialogTrigger>Uncategorized</DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    What category do you want to assign?
+                  </DialogTitle>
+                  <DialogDescription>
+                    Note: This will automatically add the "{transaction.vendor}"{" "}
+                    name as a keyword to that category.
+                    <Select
+                      value={category}
+                      onValueChange={(val) => {
+                        setCategory(val);
+                      }}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories?.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      className="mt-1 w-full"
+                      onClick={async () => {
+                        const fd = new FormData();
+                        fd.set("categoryId", category);
+                        fd.set("keywordName", transaction.vendor);
+                        createKeyword(undefined, fd);
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          )}
         </span>
       </TableCell>
       <TableCell>${displayAmount}</TableCell>
@@ -48,16 +119,24 @@ function Transaction({ transaction }: { transaction: Transaction }) {
 
 export function TransactionsDisplay({
   transactions,
+  categories,
 }: {
   transactions: Transaction[];
+  categories: Category[];
 }) {
   return (
-    <Table>
-      <TableBody>
-        {transactions.map((transaction) => (
-          <Transaction key={transaction.id} transaction={transaction} />
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      <Table>
+        <TableBody>
+          {transactions.map((transaction) => (
+            <Transaction
+              key={transaction.id}
+              transaction={transaction}
+              categories={categories}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 }
