@@ -3,7 +3,7 @@ import {
   getTopSpendingThisMonth,
 } from "@/lib/actions";
 import { initPocketbaseFromCookie } from "@/lib/pb";
-import { displayAmount } from "@/lib/utils";
+import { cn, displayAmount } from "@/lib/utils";
 
 export async function TopSpending() {
   const transactions = await getTopSpendingThisMonth();
@@ -28,16 +28,20 @@ export async function CategorizedSpending() {
 
   for (let [key, value] of Array.from(groups.entries())) {
     data.push([key, displayAmount(value)]);
-    // console.log(key, value);
   }
 
   return (
     <div>
       <h1 className="font-bold text-2xl">Categorized Spending This Month</h1>
       {data.map((pair) => {
+        const category = pair[0];
+        const amount = pair[1];
         return (
-          <h1 key={pair[0]}>
-            {pair[0]}: ${pair[1]}
+          <h1 key={category}>
+            {category}:{" "}
+            <span className={cn({ "text-green-500": amount.at(0) != "-" })}>
+              ${amount}
+            </span>
           </h1>
         );
       })}
