@@ -5,15 +5,30 @@ import {
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import { cn, displayAmount } from "@/lib/utils";
 
-export async function TopSpending() {
+import { Card, CardHeader, CardContent } from "./ui/card";
+
+export async function TopSpending({
+  className
+}: {
+  className?: string
+}) {
   const transactions = await getTopSpendingThisMonth();
+
   return (
-    <div>
-      <h1 className="font-bold text-2xl">Top Spending This Month</h1>
+    <div className={className}>
+      <h1 className="font-bold text-2xl text-center">Top Spending This Month</h1>
       {transactions.map((transaction) => (
-        <h1 key={transaction.id}>
-          {transaction.vendor}: ${displayAmount(transaction.amount)}
-        </h1>
+        <Card key={transaction.id}>
+          <CardHeader className="flex">
+            <p className="text-ellipsis overflow-hidden">
+              {transaction.vendor}
+
+              <span className="float-right">
+                ${displayAmount(transaction.amount)}
+              </span>
+            </p>
+          </CardHeader>
+        </Card>
       ))}
     </div>
   );
@@ -32,17 +47,24 @@ export async function CategorizedSpending() {
 
   return (
     <div>
-      <h1 className="font-bold text-2xl">Categorized Spending This Month</h1>
+      <h1 className="font-bold text-2xl text-center">Categorized Spending</h1>
       {data.map((pair) => {
         const category = pair[0];
         const amount = pair[1];
         return (
-          <h1 key={category}>
-            {category}:{" "}
-            <span className={cn({ "text-green-500": amount.at(0) != "-" })}>
-              ${amount}
-            </span>
-          </h1>
+          <Card key={category}>
+            <CardHeader>
+              <p>
+              {category}
+              <span className={cn('float-right', {
+                'text-green-500': amount.at(0) !== '-',
+                'text-red-500': amount.at(0) === '-'
+              })}>
+                ${amount}
+              </span>
+              </p>
+            </CardHeader>
+          </Card>
         );
       })}
     </div>
@@ -54,8 +76,8 @@ export async function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-2">
-        <TopSpending />
+      <div className="grid grid-cols-1 md:grid-cols-2 pl-1">
+        <TopSpending className="hidden md:block" />
         <CategorizedSpending />
       </div>
     </>

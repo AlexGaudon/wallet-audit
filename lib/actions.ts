@@ -58,8 +58,13 @@ export async function getTopSpendingThisMonth() {
       x.expand.category.name !== "Investments" &&
       x.expand.category.name !== "Transfer"
   );
+  const categorizedThisMonth = await getCategorizedSpendingForPeriod(new Date().toString())
 
-  return filtered.slice(0, 3);
+  const keys = Array.from(categorizedThisMonth.keys());
+
+  const length = Math.max(10, keys.length);
+
+  return filtered.slice(0, length);
 }
 
 export async function deleteTransaction(transactionId: string) {

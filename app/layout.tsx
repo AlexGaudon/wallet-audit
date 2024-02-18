@@ -29,7 +29,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex h-screen bg-gray-100">
-          <nav className="min-w-64 w-64 bg-white shadow-md">
+          <nav className="min-w-64 w-64 bg-white shadow-md hidden md:block">
             <div className="px-8 py-4 flex">
               <div className="items-center justify-center flex">
                 <img src="/favicon.ico" className="w-8 h-8" />
@@ -38,7 +38,7 @@ export default async function RootLayout({
                 </h2>
               </div>
             </div>
-            <div className="m-2 items-center justify-center flex">
+            <div className="m-2 items-center justify-center flex ">
               {!pb.authStore.isValid && (
                 <>
                   <main className="space-x-2">
