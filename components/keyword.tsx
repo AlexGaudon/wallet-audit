@@ -1,6 +1,7 @@
 "use client";
 
 import { Keyword } from "@/lib/definitions";
+import { Badge } from "./ui/badge";
 
 export function Keyword({
   keyword,
@@ -9,5 +10,5 @@ export function Keyword({
   keyword: Keyword;
   className?: string;
 }) {
-  return <h1 className={className}>{keyword.keyword}</h1>;
+  return <Badge className={className}>{keyword.keyword}</Badge>;
 }

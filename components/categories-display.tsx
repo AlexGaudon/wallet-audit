@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 
 function Category({ category }: { category: Category }) {
   return (
-    <Card className="grid grid-cols-2">
-      <CardHeader>
+    <Card className="grid grid-cols-2 mt-2 drop-shadow-lg">
+      <CardHeader> 
         <div className="flex items-center">
           <button
             className="w-8"
@@ -27,9 +27,11 @@ function Category({ category }: { category: Category }) {
         </div>
       </CardHeader>
       <CardContent className="mt-4">
-        {category.expand?.keywords?.map((keyword) => {
-          return <Keyword key={keyword.id} keyword={keyword} />;
-        })}
+        <div className="grid grid-cols-3">
+          {category.expand?.keywords?.map((keyword) => {
+            return <Keyword className="m-0.5" key={keyword.id} keyword={keyword} />;
+          })}
+        </div>
         <CreateKeywordForm categoryId={category.id} />
       </CardContent>
     </Card>

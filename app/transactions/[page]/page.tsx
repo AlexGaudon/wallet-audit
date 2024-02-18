@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Paginator } from "@/components/pagination";
 import { TransactionsDisplay } from "@/components/transactions-display";
 import { Category, Transaction } from "@/lib/definitions";
+import { getTransactions } from "@/lib/data-fetching";
 
 export default async function TransactionsPage({
   params,
@@ -20,12 +21,7 @@ export default async function TransactionsPage({
 
   const pageAsNumber = Number.parseInt(params.page, 10);
 
-  const transactions = await pb
-    .collection<Transaction>("transactions")
-    .getList(pageAsNumber, 20, {
-      expand: "category",
-      sort: "-date",
-    });
+  const transactions = await getTransactions(25, pageAsNumber);
 
   const categories = await pb.collection<Category>("categories").getFullList();
 
