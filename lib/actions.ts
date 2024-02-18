@@ -55,8 +55,8 @@ export async function getTopSpendingThisMonth() {
 
   const filtered = transactions.filter(
     (x) =>
-      x.expand.category.name !== "Investments" &&
-      x.expand.category.name !== "Transfer"
+      x.expand?.category?.name !== "Investments" &&
+      x.expand?.category?.name !== "Transfer"
   );
   const categorizedThisMonth = await getCategorizedSpendingForPeriod(new Date().toString())
 
@@ -216,8 +216,10 @@ export async function signOut() {
   redirect("/signin");
 }
 
-export async function importTransactions(fileName: string, data: string) {
+export async function importTransactions(data: string) {
   const session = await getSession();
+
+  console.log('Running Import')
 
   if (!session) {
     return "Unauthorized";
@@ -276,17 +278,14 @@ export async function importTransactions(fileName: string, data: string) {
       date: new Date(td.DTPOSTED),
       externalId: td.FITID,
     };
-    console.log(newTransaction);
     try {
       const category = await getCategoryFromVendorName(newTransaction.vendor);
-      console.log(category);
       if (category !== undefined) {
         newTransaction.category = category;
       }
       await pb.collection("transactions").create(newTransaction);
     } catch (e) {
       const error = e as ClientResponseError;
-
       console.error(JSON.stringify(error));
     }
   }
