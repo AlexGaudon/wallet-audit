@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 function Category({ category }: { category: Category }) {
   return (
     <Card className="grid grid-cols-2 mt-2 drop-shadow-lg">
-      <CardHeader> 
+      <CardHeader>
         <div className="flex items-center">
           <button
             className="w-8"
@@ -27,12 +27,18 @@ function Category({ category }: { category: Category }) {
         </div>
       </CardHeader>
       <CardContent className="mt-4">
-        <div className="grid grid-cols-3">
+        <CreateKeywordForm categoryId={category.id} />
+        <div className="grid grid-cols-1 2xl:grid-cols-3">
           {category.expand?.keywords?.map((keyword) => {
-            return <Keyword className="m-0.5" key={keyword.id} keyword={keyword} />;
+            return (
+              <Keyword
+                className="m-0.5 text-ellipsis overflow-hidden"
+                key={keyword.id}
+                keyword={keyword}
+              />
+            );
           })}
         </div>
-        <CreateKeywordForm categoryId={category.id} />
       </CardContent>
     </Card>
   );
@@ -40,10 +46,10 @@ function Category({ category }: { category: Category }) {
 
 export function CategoriesDisplay({ categories }: { categories: Category[] }) {
   return (
-    <>
+    <div className="grid grid-cols-2 space-x-2 space-y-2">
       {categories.map((category) => (
         <Category key={category.id} category={category} />
       ))}
-    </>
+    </div>
   );
 }

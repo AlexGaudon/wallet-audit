@@ -23,7 +23,7 @@ export default async function CategoriesPage({
 
   const categories = await pb
     .collection<Category>("categories")
-    .getList(pageAsNumber, 4, {
+    .getList(pageAsNumber, 6, {
       expand: "keywords",
     });
 
