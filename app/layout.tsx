@@ -11,6 +11,7 @@ import {
   FileIcon,
   FilesIcon,
   LayoutDashboardIcon,
+  LineChartIcon,
   TagsIcon,
 } from "lucide-react";
 
@@ -76,6 +77,15 @@ export default async function RootLayout({
                     >
                       <LayoutDashboardIcon />
                       <span className="ml-3">Dashboard</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
+                      href="/insights"
+                    >
+                      <LineChartIcon />
+                      <span className="ml-3">Insights</span>
                     </Link>
                   </li>
                   <li>
