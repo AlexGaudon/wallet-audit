@@ -11,7 +11,7 @@ const WalletAuditLanding = () => {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 Wallet Audit. Audit instead of Budget.
               </h2>
-              <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+              <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                 Budgeting shouldn't be a source of frustration. WalletAudit is
                 born from the realization that understanding your spending
                 patterns by category is the key to financial empowerment. No
@@ -20,9 +20,9 @@ const WalletAuditLanding = () => {
               </p>
             </div>
           </div>
-          <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+          <div className="mx-auto grid items-center py-12 lg:gap-12">
             <div className="flex flex-col justify-center space-y-4">
-              <ul className="grid gap-6">
+              <ul className="grid space-y-4">
                 <li>
                   <div className="grid gap-1">
                     <h3 className="text-xl font-bold">
