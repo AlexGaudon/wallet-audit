@@ -1,7 +1,7 @@
 "use client";
 import { createKeyword, deleteTransaction } from "@/lib/actions";
 import { Category, Transaction } from "@/lib/definitions";
-import { cn, displayAmount } from "@/lib/utils";
+import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -33,6 +33,8 @@ function Transaction({
 
   const [category, setCategory] = useState("");
 
+  console.log(transaction?.expand?.category?.color);
+
   return (
     <TableRow>
       <TableCell>
@@ -56,12 +58,15 @@ function Transaction({
       </TableCell>
       <TableCell>
         <span
-          className={cn(
-            "text-md font-mono bg-primary p-1.5 rounded text-secondary",
-            {
-              "bg-red-500": categoryName === undefined,
-            }
-          )}
+          style={{
+            background: transaction.expand.category.color,
+            color: getTextColorBasedOnBackground(
+              transaction.expand.category.color
+            ),
+          }}
+          className={cn("text-md font-mono p-1.5 rounded", {
+            "bg-red-500": categoryName === undefined,
+          })}
         >
           {categoryName ? (
             categoryName

@@ -30,15 +30,6 @@ export async function getCategorizedSpendingByDay(
       expand: "category",
     });
 
-  //   const transactions = await pb
-  //     .collection<Transaction>("transactions")
-  //     .getFullList({
-  //       filter: `date >= "${startDay.toISOString().split("T")[0]}" && date <= "${
-  //         endDate.toISOString().split("T")[0]
-  //       }"`,
-  //       sort: "+date",
-  //       expand: "category",
-  //     });
   const data: {
     name: string;
     [T: string]: string;
@@ -59,6 +50,14 @@ export async function getCategorizedSpendingByDay(
     const date = new Date(transaction.date).toISOString().split("T")[0];
     let dataElement = data.filter((x) => x.name === date)[0];
     const categoryName = transaction?.expand?.category?.name ?? "Uncategorized";
+
+    if (
+      categoryName === "Income" ||
+      categoryName === "Transfer" ||
+      categoryName === "Investments"
+    ) {
+      continue;
+    }
 
     if (dataElement[categoryName] === undefined) {
       dataElement[categoryName] = addAmount("0", transaction.amount);

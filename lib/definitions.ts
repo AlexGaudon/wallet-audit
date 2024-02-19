@@ -48,6 +48,7 @@ export type Category = {
   updated: Date;
   user: string;
   keywords: string[];
+  color: string;
   expand?: {
     keywords?: Keyword[];
   };

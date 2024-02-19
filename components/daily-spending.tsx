@@ -1,4 +1,5 @@
 "use client";
+import { type Category } from "@/lib/definitions";
 import { useEffect, useState } from "react";
 import {
   BarChart,
@@ -11,8 +12,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export function DailySpending({ realData }: { realData: any }) {
-  const [data, setData] = useState<any>([]);
+export function DailySpending({
+  realData,
+  categories,
+}: {
+  realData: {
+    [T: string]: string;
+    name: string;
+  }[];
+  categories: Category[];
+}) {
+  const [data, setData] = useState<
+    {
+      [T: string]: string;
+      name: string;
+    }[]
+  >([]);
   const [colors, setColors] = useState<{
     [T: string]: string;
   }>({});
@@ -21,14 +36,13 @@ export function DailySpending({ realData }: { realData: any }) {
 
   useEffect(() => {
     setData(realData);
-    const colorsForCategories = [];
     for (let data of realData) {
       let keys = Object.keys(data);
       for (let key of keys) {
-        if (key === "Income") continue;
         if (colors?.[key] === undefined) {
-          console.log(keys);
-          colors[key] = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+          const category = categories.find((category) => category.name === key);
+          if (category === undefined) continue;
+          colors[key] = category?.color;
           if (key !== "name") {
             bars.push(<Bar dataKey={key} stackId="a" fill={colors[key]} />);
           }
@@ -41,8 +55,8 @@ export function DailySpending({ realData }: { realData: any }) {
     <>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          width={window.screen.width}
-          height={window.screen.height * 0.9}
+          width={window?.screen.width ?? 0}
+          height={window?.screen.height * 0.9 ?? 0}
           data={data}
           margin={{
             top: 20,

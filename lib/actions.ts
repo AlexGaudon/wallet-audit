@@ -8,6 +8,40 @@ import { Category, Keyword, Transaction } from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
 
+const hexColors = [
+  "#3498db",
+  "#2ecc71",
+  "#e74c3c",
+  "#f39c12",
+  "#1abc9c",
+  "#27ae60",
+  "#c0392b",
+  "#2980b9",
+  "#d35400",
+  "#2c3e50",
+  "#8e44ad",
+  "#16a085",
+  "#7f8c8d",
+  "#f1c40f",
+  "#34495e",
+  "#95a5a6",
+  "#e82c0c",
+  "#136a8a",
+  "#7f7f7f",
+  "#8c564b",
+  "#d62728",
+  "#e377c2",
+  "#bcbd22",
+  "#17becf",
+  "#aec7e8",
+  "#2ca02c",
+  "#98df8a",
+  "#9467bd",
+  "#c5b0d5",
+  "#c49c94",
+  "#ffbb78",
+];
+
 export async function getCategorizedSpendingForPeriod(period: string) {
   const pb = await initPocketbaseFromCookie();
 
@@ -58,7 +92,9 @@ export async function getTopSpendingThisMonth() {
       x.expand?.category?.name !== "Investments" &&
       x.expand?.category?.name !== "Transfer"
   );
-  const categorizedThisMonth = await getCategorizedSpendingForPeriod(new Date().toString())
+  const categorizedThisMonth = await getCategorizedSpendingForPeriod(
+    new Date().toString()
+  );
 
   const keys = Array.from(categorizedThisMonth.keys());
 
@@ -132,6 +168,20 @@ export async function createKeyword(
   return "ok";
 }
 
+async function getUnusedColor() {
+  const pb = await initPocketbaseFromCookie();
+  const categories = await pb.collection<Category>("categories").getFullList();
+  let colors = [...hexColors];
+
+  for (let category of categories) {
+    if (colors.includes(category.color)) {
+      colors = colors.slice(colors.indexOf(category.color), 1);
+    }
+  }
+
+  return colors[Math.round(Math.random() * colors.length)];
+}
+
 export async function createCategory(
   prevState: string | undefined,
   formData: FormData
@@ -146,6 +196,7 @@ export async function createCategory(
     const res = await pb.collection<Category>("categories").create({
       name,
       user: session?.id,
+      // color:
     });
     revalidatePath("/categories/");
     return res.id;
@@ -219,7 +270,7 @@ export async function signOut() {
 export async function importTransactions(data: string) {
   const session = await getSession();
 
-  console.log('Running Import')
+  console.log("Running Import");
 
   if (!session) {
     return "Unauthorized";
