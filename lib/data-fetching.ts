@@ -60,11 +60,11 @@ export async function getCategorizedSpendingByDay(
     }
 
     if (dataElement[categoryName] === undefined) {
-      dataElement[categoryName] = addAmount("0", transaction.amount);
+      dataElement[categoryName] = addAmount("0", Math.abs(transaction.amount));
     } else {
       dataElement[categoryName] = addAmount(
         dataElement[categoryName],
-        transaction.amount
+        Math.abs(transaction.amount)
       );
     }
   }

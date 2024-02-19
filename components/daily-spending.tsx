@@ -66,10 +66,10 @@ export function DailySpending({
           }}
         >
           <Tooltip coordinate={{ x: 0, y: 0 }} />
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Legend />
+          {/* <Legend /> */}
           {bars}
         </BarChart>
       </ResponsiveContainer>

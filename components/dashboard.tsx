@@ -43,11 +43,13 @@ export async function CategorizedSpending({
     new Date().toISOString()
   );
 
-  const data = [];
+  const rawData = [];
 
   for (let [key, value] of Array.from(groups.entries())) {
-    data.push([key, displayAmount(value)]);
+    rawData.push([key, displayAmount(value)]);
   }
+
+  const data = rawData.sort();
 
   return (
     <div className={className}>
