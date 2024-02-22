@@ -31,6 +31,7 @@ export function getTextColorBasedOnBackground(
   backgroundColor: string
 ): "black" | "white" {
   // Convert the hex color to RGB
+
   const hexToRgb = (hex: string): RGBColor => {
     hex = hex.replace(/^#/, "");
 

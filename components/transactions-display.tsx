@@ -59,10 +59,12 @@ function Transaction({
       <TableCell>
         <span
           style={{
-            background: transaction.expand.category.color,
-            color: getTextColorBasedOnBackground(
-              transaction.expand.category.color
-            ),
+            background: transaction?.expand?.category?.color,
+            color: transaction?.expand?.category?.color
+              ? getTextColorBasedOnBackground(
+                  transaction?.expand?.category?.color
+                )
+              : "white",
           }}
           className={cn("text-md font-mono p-1.5 rounded", {
             "bg-red-500": categoryName === undefined,
