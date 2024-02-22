@@ -3,7 +3,7 @@ import {
   getTopSpendingThisMonth,
 } from "@/lib/actions";
 import { initPocketbaseFromCookie } from "@/lib/pb";
-import { cn, displayAmount } from "@/lib/utils";
+import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 
 import { Card, CardHeader, CardContent } from "./ui/card";
 
@@ -46,23 +46,41 @@ export async function CategorizedSpending({
   const rawData = [];
 
   for (let [key, value] of Array.from(groups.entries())) {
-    rawData.push([key, displayAmount(value)]);
+    rawData.push({
+      category: key,
+      color: value.color,
+      amount: displayAmount(value.amount),
+    });
   }
 
   const data = rawData.sort();
+
+  console.log(data);
 
   return (
     <div className={className}>
       <h1 className="font-bold text-2xl text-center">Categorized Spending</h1>
       <div className="space-y-2">
         {data.map((pair) => {
-          const category = pair[0];
-          const amount = pair[1];
+          console.log(pair);
+          const category = pair.category;
+          const amount = pair.amount;
+          const color = pair.color;
           return (
-            <Card key={category}>
+            <Card key={category.toString()}>
               <CardHeader>
                 <p>
-                  {category}
+                  <span
+                    style={{
+                      background: color,
+                      color: color
+                        ? getTextColorBasedOnBackground(color)
+                        : "white",
+                    }}
+                    className={cn("text-md font-mono p-1.5 rounded")}
+                  >
+                    {category.toString()}
+                  </span>
                   <span
                     className={cn("float-right", {
                       "text-green-500": amount.at(0) !== "-",
