@@ -55,19 +55,16 @@ export async function CategorizedSpending({
 
   const data = rawData.sort();
 
-  console.log(data);
-
   return (
     <div className={className}>
       <h1 className="font-bold text-2xl text-center">Categorized Spending</h1>
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 md:grid-cols-3">
         {data.map((pair) => {
-          console.log(pair);
           const category = pair.category;
           const amount = pair.amount;
           const color = pair.color;
           return (
-            <Card key={category.toString()}>
+            <Card key={category}>
               <CardHeader>
                 <p>
                   <span
@@ -79,10 +76,10 @@ export async function CategorizedSpending({
                     }}
                     className={cn("text-md font-mono p-1.5 rounded")}
                   >
-                    {category.toString()}
+                    {category}
                   </span>
                   <span
-                    className={cn("float-right", {
+                    className={cn("float-right font-mono text-lg", {
                       "text-green-500": amount.at(0) !== "-",
                       "text-red-500": amount.at(0) === "-",
                     })}
@@ -104,9 +101,9 @@ export async function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 pl-1 space-x-2">
+      <div className="">
+        <CategorizedSpending className="w-full" />
         <TopSpending className="hidden md:block" />
-        <CategorizedSpending />
       </div>
     </>
   );
