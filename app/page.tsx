@@ -71,7 +71,7 @@ export default async function Home() {
   const session = await getSession();
 
   return (
-    <main className="w-full">
+    <main className="w-full mx-2">
       {session && <Dashboard />}
 
       {!session && <WalletAuditLanding />}

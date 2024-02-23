@@ -12,7 +12,7 @@ export async function TopSpending({ className }: { className?: string }) {
 
   return (
     <div className={className}>
-      <h1 className="font-bold text-2xl text-center">
+      <h1 className="font-bold text-3xl text-center">
         Top Spending This Month
       </h1>
       <div className="space-y-2">
@@ -57,7 +57,7 @@ export async function CategorizedSpending({
 
   return (
     <div className={className}>
-      <h1 className="font-bold text-2xl text-center">Categorized Spending</h1>
+      <h1 className="font-bold text-3xl text-center">Categorized Spending</h1>
       <div className="grid grid-cols-1 md:grid-cols-3">
         {data.map((pair) => {
           const category = pair.category;
@@ -101,7 +101,7 @@ export async function Dashboard() {
 
   return (
     <>
-      <div className="">
+      <div className="space-y-4">
         <CategorizedSpending className="w-full" />
         <TopSpending className="hidden md:block" />
       </div>

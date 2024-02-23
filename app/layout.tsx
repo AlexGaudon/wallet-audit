@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex h-screen">
-          <nav className="min-w-64 w-64 bg-white shadow-2xl hidden md:block">
+          <nav className="min-w-64 w-64 bg-white shadow hidden md:block">
             <div className="px-8 py-4 flex">
               <div className="items-center justify-center flex">
                 <img src="/favicon.ico" className="w-8 h-8" />
