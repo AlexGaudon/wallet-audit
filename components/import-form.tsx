@@ -1,15 +1,22 @@
 "use client";
 import { importTransactions } from "@/lib/actions";
 import { Input } from "./ui/input";
+import { useToast } from "./ui/use-toast";
+import { Toaster } from "./ui/toaster";
 
 export function ImportForm() {
+  const { toast } = useToast();
   const onFileLoaded = async (data: string) => {
     await importTransactions(data);
+    toast({
+      description: "Done importing transactions.",
+    });
   };
   return (
     <form>
+      <Toaster />
       <Input
-      className="h-[500px] bg-primary-foreground"
+        className="h-[500px] bg-primary-foreground"
         type="file"
         accept=".qfx"
         multiple={true}
@@ -23,16 +30,16 @@ export function ImportForm() {
           }
 
           const readFile = (idx: number) => {
-            if (idx > files.length-1) return;
+            if (idx > files.length - 1) return;
 
             const file = files[idx];
 
             reader.onload = (_event: Event) => {
               onFileLoaded(reader.result as string);
-              readFile(idx+1);
+              readFile(idx + 1);
             };
             reader.readAsText(file);
-          }
+          };
 
           readFile(0);
         }}
