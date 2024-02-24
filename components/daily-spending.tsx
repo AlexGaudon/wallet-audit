@@ -2,14 +2,13 @@
 import { type Category } from "@/lib/definitions";
 import { useEffect, useState } from "react";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
 
 export function DailySpending({
@@ -51,12 +50,21 @@ export function DailySpending({
     }
   }, [data, colors, bars]);
 
+  const dimensions = {
+    width: 0,
+    height: 0,
+  };
+
+  if (typeof window !== "undefined") {
+    dimensions.width = window?.screen.width ?? 0;
+    dimensions.height = window?.screen.height * 0.9 ?? 0;
+  }
+
   return (
     <>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          width={window?.screen.width ?? 0}
-          height={window?.screen.height * 0.9 ?? 0}
+          {...dimensions}
           data={data}
           margin={{
             top: 20,
@@ -69,7 +77,6 @@ export function DailySpending({
           <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey="name" />
           <YAxis />
-          {/* <Legend /> */}
           {bars}
         </BarChart>
       </ResponsiveContainer>

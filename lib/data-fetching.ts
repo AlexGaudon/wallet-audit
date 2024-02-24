@@ -1,13 +1,27 @@
+import type { Transaction } from "@/lib/definitions";
 import { initPocketbaseFromCookie } from "./pb";
-import type { Category, Transaction } from "@/lib/definitions";
 
 import { displayAmount, getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
 
-export async function getTransactions(count: number, page: number) {
+function buildFilterStringFromObject(filter: { name?: string }) {
+  if (filter && filter.name) {
+    return `vendor ~ "${filter?.name}"`;
+  }
+  return "";
+}
+
+export async function getTransactions(
+  count: number,
+  page: number,
+  filter: {
+    name?: string;
+  } = {}
+) {
   const pb = await initPocketbaseFromCookie();
   return await pb.collection<Transaction>("transactions").getList(page, count, {
     expand: "category",
     sort: "-date",
+    filter: buildFilterStringFromObject(filter),
   });
 }
 

@@ -3,8 +3,12 @@ import { createKeyword, deleteTransaction } from "@/lib/actions";
 import { Category, Transaction } from "@/lib/definitions";
 import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+
+import { useDebounceValue } from "usehooks-ts";
+
 import {
   Dialog,
   DialogContent,
@@ -13,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
@@ -32,8 +37,6 @@ function Transaction({
   const categoryName = transaction.expand?.category?.name;
 
   const [category, setCategory] = useState("");
-
-  console.log(transaction?.expand?.category?.color);
 
   return (
     <TableRow>
@@ -130,8 +133,26 @@ export function TransactionsDisplay({
   transactions: Transaction[];
   categories: Category[];
 }) {
+  const [term, setTerm] = useState("");
+  const router = useRouter();
+
+  const [debouncedValue, setDebounced] = useDebounceValue<string>(term, 300);
+
+  useEffect(() => {
+    if (debouncedValue === "") {
+      router.replace("/transactions/1");
+    } else {
+      router.replace(`/transactions/1?name=${debouncedValue}`);
+    }
+  }, [debouncedValue]);
   return (
     <>
+      <Input
+        type="text"
+        onChange={(e) => {
+          setTerm(e.target.value);
+        }}
+      />
       <Table>
         <TableBody>
           {transactions.map((transaction) => (

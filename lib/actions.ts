@@ -163,8 +163,6 @@ export async function createKeyword(
         category: assignResult?.id,
       });
     }
-
-    console.log("TRANSACTIONS WITH VENDOR:", transactions);
   } catch (e) {
     return "Error assigning category to transactions.";
   }
@@ -273,8 +271,6 @@ export async function signOut() {
 
 export async function importTransactions(data: string) {
   const session = await getSession();
-
-  console.log("Running Import");
 
   if (!session) {
     return "Unauthorized";

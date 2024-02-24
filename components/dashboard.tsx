@@ -5,7 +5,7 @@ import {
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 
-import { Card, CardHeader, CardContent } from "./ui/card";
+import { Card, CardHeader } from "./ui/card";
 
 export async function TopSpending({ className }: { className?: string }) {
   const transactions = await getTopSpendingThisMonth();

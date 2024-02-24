@@ -39,7 +39,6 @@ export function SignInForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     const fd = new FormData();
 
     fd.set("email", values.email);

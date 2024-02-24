@@ -1,5 +1,5 @@
-import { getCategorizedSpendingByDay } from "@/lib/data-fetching";
 import { DailySpending } from "@/components/daily-spending";
+import { getCategorizedSpendingByDay } from "@/lib/data-fetching";
 import { initPocketbaseFromCookie } from "@/lib/pb";
 
 import { type Category } from "@/lib/definitions";

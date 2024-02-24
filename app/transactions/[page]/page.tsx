@@ -3,13 +3,17 @@ import { redirect } from "next/navigation";
 
 import { Paginator } from "@/components/pagination";
 import { TransactionsDisplay } from "@/components/transactions-display";
-import { Category, Transaction } from "@/lib/definitions";
 import { getTransactions } from "@/lib/data-fetching";
+import { Category } from "@/lib/definitions";
 
 export default async function TransactionsPage({
   params,
+  searchParams,
 }: {
   params: { page: string };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
 }) {
   const session = await getSession();
 
@@ -21,7 +25,23 @@ export default async function TransactionsPage({
 
   const pageAsNumber = Number.parseInt(params.page, 10);
 
-  const transactions = await getTransactions(25, pageAsNumber);
+  const filters: {
+    name?: string;
+  } = {};
+
+  if (searchParams !== undefined) {
+    if ("name" in searchParams) {
+      if (searchParams.name !== undefined) {
+        if (Array.isArray(searchParams.name)) {
+          filters.name = searchParams.name[0];
+        } else {
+          filters.name = searchParams.name;
+        }
+      }
+    }
+  }
+
+  const transactions = await getTransactions(25, pageAsNumber, filters);
 
   const categories = await pb.collection<Category>("categories").getFullList();
 

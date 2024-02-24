@@ -41,7 +41,6 @@ export function SignUpForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     const fd = new FormData();
     fd.set("displayName", values.displayName);
     fd.set("email", values.email);
