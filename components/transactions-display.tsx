@@ -147,14 +147,19 @@ export function TransactionsDisplay({
   }, [debouncedValue]);
   return (
     <>
-      <Input
-        type="text"
-        onChange={(e) => {
-          setTerm(e.target.value);
-        }}
-      />
       <Table>
         <TableBody>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>
+              <Input
+                type="text"
+                onChange={(e) => {
+                  setTerm(e.target.value);
+                }}
+              />
+            </TableCell>
+          </TableRow>
           {transactions.map((transaction) => (
             <Transaction
               key={transaction.id}
