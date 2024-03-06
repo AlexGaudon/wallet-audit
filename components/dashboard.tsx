@@ -103,9 +103,56 @@ export async function Dashboard() {
   return (
     <>
       <div className="space-y-4">
-        <CategorizedSpending className="w-full" />
-        <TopSpending className="hidden md:block" />
+        <Totals />
+        <div className="grid grid-cols-1 lg:grid-cols-2 space-x-4">
+          <CategorizedSpending className="w-full" />
+          <TopSpending className="hidden md:block" />
+        </div>
       </div>
     </>
+  );
+}
+
+export async function Totals() {
+  const data = await getCategorizedSpendingForPeriod(new Date().toISOString());
+
+  const income = data.get("Income")?.amount ?? 0;
+
+  let totalSpending = 0;
+
+  for (const entry of Array.from(data.values())) {
+    if (entry.name === "Investments") continue;
+    totalSpending += entry.amount;
+  }
+
+  totalSpending = Math.abs(totalSpending);
+
+  const difference = totalSpending - income;
+
+  return (
+    <div>
+      <h1 className="font-bold text-3xl text-center">
+        Total Income vs Expense
+      </h1>
+      <h1 className="text-xl text-center">
+        Income: <span className="text-green-500">${displayAmount(income)}</span>
+      </h1>
+      <h1 className="text-xl text-center">
+        Expenses:{" "}
+        <span className="text-red-500">${displayAmount(totalSpending)}</span>
+      </h1>
+      <br />
+      <h1 className="text-xl text-center">
+        Total:
+        <span
+          className={cn({
+            "text-green-500": difference < 0,
+            "text-red-500": difference > 0,
+          })}
+        >
+          ${displayAmount(difference)}
+        </span>
+      </h1>
+    </div>
   );
 }

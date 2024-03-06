@@ -65,6 +65,7 @@ export async function getCategorizedSpendingForPeriod(period: string) {
   const grouped = new Map<
     string,
     {
+      name: string;
       amount: number;
       color: string;
     }
@@ -78,6 +79,7 @@ export async function getCategorizedSpendingForPeriod(period: string) {
 
     if (!grouped.get(cName)) {
       grouped.set(cName, {
+        name: cName,
         amount: 0,
         color: transaction.expand.category.color,
       });
@@ -87,6 +89,7 @@ export async function getCategorizedSpendingForPeriod(period: string) {
     grouped.set(cName, {
       ...val,
       amount: val.amount + transaction.amount,
+      name: cName,
     });
   }
 
