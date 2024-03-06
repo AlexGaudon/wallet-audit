@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
-import { Category, Keyword, Transaction } from "./definitions";
+import {
+  Category,
+  Keyword,
+  MonthlyTopSpending,
+  Transaction,
+} from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
 
@@ -92,19 +97,10 @@ export async function getTopSpendingThisMonth() {
   const pb = await initPocketbaseFromCookie();
 
   const transactions = await pb
-    .collection<Transaction>("transactions")
-    .getFullList({
-      filter: "date >= @monthStart && date <= @monthEnd",
-      sort: "+amount",
-      expand: "category",
-    });
+    .collection<MonthlyTopSpending>("monthly_spending_by_vendor")
+    .getFullList();
 
-  const filtered = transactions.filter(
-    (x) =>
-      x.expand?.category?.name !== "Investments" &&
-      x.expand?.category?.name !== "Transfer"
-  );
-  return filtered.slice(0, 5);
+  return transactions;
 }
 
 export async function deleteTransaction(transactionId: string) {

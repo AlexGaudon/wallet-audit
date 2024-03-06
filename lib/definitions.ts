@@ -1,3 +1,13 @@
+export type MonthlyTopSpending = {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  user: string;
+  vendor: string;
+  transaction_count: number;
+  total_amount: number;
+};
+
 export type Transaction = {
   amount: number;
   category: string;

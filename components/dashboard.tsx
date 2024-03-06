@@ -20,10 +20,11 @@ export async function TopSpending({ className }: { className?: string }) {
           <Card key={transaction.id}>
             <CardHeader className="flex">
               <p className="text-ellipsis overflow-hidden">
+                <span>({transaction.transaction_count}) </span>
                 {transaction.vendor}
 
                 <span className="float-right">
-                  ${displayAmount(transaction.amount)}
+                  ${displayAmount(transaction.total_amount)}
                 </span>
               </p>
             </CardHeader>
