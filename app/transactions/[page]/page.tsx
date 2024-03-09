@@ -41,7 +41,7 @@ export default async function TransactionsPage({
     }
   }
 
-  const transactions = await getTransactions(25, pageAsNumber, filters);
+  const transactions = await getTransactions(15, pageAsNumber, filters);
 
   const categories = await pb.collection<Category>("categories").getFullList();
 

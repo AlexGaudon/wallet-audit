@@ -139,9 +139,7 @@ export function TransactionsDisplay({
   const [debouncedValue, setDebounced] = useDebounceValue<string>(term, 300);
 
   useEffect(() => {
-    if (debouncedValue === "") {
-      router.replace("/transactions/1");
-    } else {
+    if (debouncedValue !== "") {
       router.replace(`/transactions/1?name=${debouncedValue}`);
     }
   }, [debouncedValue]);
@@ -155,7 +153,11 @@ export function TransactionsDisplay({
               <Input
                 type="text"
                 onChange={(e) => {
-                  setTerm(e.target.value);
+                  if (e.target.value === "") {
+                    router.replace("/transactions/1");
+                  } else {
+                    setTerm(e.target.value);
+                  }
                 }}
               />
             </TableCell>
