@@ -150,7 +150,7 @@ export async function Totals() {
             "text-red-500": difference > 0,
           })}
         >
-          ${displayAmount(difference)}
+          ${displayAmount(Math.abs(difference))}
         </span>
       </h1>
     </div>
