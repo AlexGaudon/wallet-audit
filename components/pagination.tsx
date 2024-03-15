@@ -18,7 +18,9 @@ export function Paginator({
       <Button
         disabled={!(page > 1)}
         onClick={() => {
-          router.push(`/${url}/${page - 1}`);
+          let newUrl = window.location.href;
+          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page-1}`)
+          router.replace(newUrl)
         }}
       >
         {"<"}
@@ -27,7 +29,9 @@ export function Paginator({
       <Button
         disabled={!(page < totalPages)}
         onClick={() => {
-          router.push(`/${url}/${page + 1}`);
+          let newUrl = window.location.href;
+          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page+1}`)
+          router.replace(newUrl)
         }}
       >
         {">"}

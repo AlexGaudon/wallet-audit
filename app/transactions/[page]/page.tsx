@@ -27,6 +27,7 @@ export default async function TransactionsPage({
 
   const filters: {
     name?: string;
+    category?: string;
   } = {};
 
   if (searchParams !== undefined) {
@@ -37,6 +38,12 @@ export default async function TransactionsPage({
         } else {
           filters.name = searchParams.name;
         }
+      }
+    }
+
+    if ("category" in searchParams) {
+      if (searchParams.category !== undefined) {
+        filters.category = searchParams.category as string;
       }
     }
   }
@@ -62,6 +69,7 @@ export default async function TransactionsPage({
         </div>
       </div>
       <TransactionsDisplay
+        categoryFiltered={filters.category !== undefined}
         transactions={transactions.items}
         categories={categories}
       />

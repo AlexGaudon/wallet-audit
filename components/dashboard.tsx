@@ -59,7 +59,7 @@ export async function CategorizedSpending({
   return (
     <div className={className}>
       <h1 className="font-bold text-3xl text-center">Categorized Spending</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         {data.map((pair) => {
           const category = pair.category;
           const amount = pair.amount;

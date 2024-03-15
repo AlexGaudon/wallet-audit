@@ -1,6 +1,6 @@
 "use client";
 import { createKeyword, deleteTransaction } from "@/lib/actions";
-import { Category, Transaction } from "@/lib/definitions";
+import type { Category, Transaction } from "@/lib/definitions";
 import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,8 @@ function Transaction({
 
   const [category, setCategory] = useState("");
 
+  const router = useRouter();
+
   return (
     <TableRow>
       <TableCell>
@@ -74,7 +76,13 @@ function Transaction({
           })}
         >
           {categoryName ? (
-            categoryName
+            <span
+              onClick={() => {
+                router.replace(`/transactions/1?category=${categoryName}`);
+              }}
+            >
+              {categoryName}
+            </span>
           ) : (
             <Dialog>
               <DialogTrigger>Uncategorized</DialogTrigger>
@@ -129,9 +137,11 @@ function Transaction({
 export function TransactionsDisplay({
   transactions,
   categories,
+  categoryFiltered,
 }: {
   transactions: Transaction[];
   categories: Category[];
+  categoryFiltered?: boolean;
 }) {
   const [term, setTerm] = useState("");
   const router = useRouter();
@@ -160,6 +170,18 @@ export function TransactionsDisplay({
                   }
                 }}
               />
+            </TableCell>
+            <TableCell></TableCell>
+            <TableCell>
+              {categoryFiltered && (
+                <Button
+                  onClick={() => {
+                    router.replace("/transactions/1");
+                  }}
+                >
+                  Reset
+                </Button>
+              )}
             </TableCell>
           </TableRow>
           {transactions.map((transaction) => (

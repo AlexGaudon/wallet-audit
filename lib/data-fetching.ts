@@ -1,12 +1,27 @@
-import type { Transaction } from "@/lib/definitions";
+import type { Category, Transaction } from "@/lib/definitions";
 import { initPocketbaseFromCookie } from "./pb";
 
 import { displayAmount, getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
 
-function buildFilterStringFromObject(filter: { name?: string }) {
+async function buildFilterStringFromObject(filter: {
+  name?: string;
+  category?: string;
+}) {
   if (filter && filter.name) {
     return `vendor ~ "${filter?.name}"`;
   }
+
+  if (filter && filter.category) {
+    const pb = await initPocketbaseFromCookie();
+    const categories = await pb
+      .collection<Category>("categories")
+      .getFullList();
+    const category = categories.find((x) => x.name === filter.category);
+
+    console.log(category);
+    return `category = "${category?.id}"`;
+  }
+
   return "";
 }
 
@@ -21,7 +36,7 @@ export async function getTransactions(
   return await pb.collection<Transaction>("transactions").getList(page, count, {
     expand: "category",
     sort: "-date",
-    filter: buildFilterStringFromObject(filter),
+    filter: await buildFilterStringFromObject(filter),
   });
 }
 
