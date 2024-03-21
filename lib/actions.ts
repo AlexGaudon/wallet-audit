@@ -192,12 +192,15 @@ export async function createCategory(
   const pb = await initPocketbaseFromCookie();
 
   const session = await getSession();
+  const color = await getUnusedColor();
+
+  console.log("Color ", color);
 
   try {
     const res = await pb.collection<Category>("categories").create({
       name,
       user: session?.id,
-      // color:
+      color: await getUnusedColor(),
     });
     revalidatePath("/categories/");
     return res.id;

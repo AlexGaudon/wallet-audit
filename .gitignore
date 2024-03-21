@@ -37,3 +37,5 @@ next-env.d.ts
 
 apps/server/bin
 apps/server/tmp
+
+tmp
