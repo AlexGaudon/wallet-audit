@@ -122,6 +122,8 @@ export async function Totals() {
 
   for (const entry of Array.from(data.values())) {
     if (entry.name === "Investments") continue;
+    if (entry.name === "Income") continue;
+    if (entry.name === "Transfer") continue;
     totalSpending += entry.amount;
   }
 
