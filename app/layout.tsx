@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 import Link from "next/link";
 
+import MobileNavbar from "@/components/mobile-nav";
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import {
   FileIcon,
@@ -29,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen">
+        <div className="md:flex h-screen">
           <nav className="min-w-64 w-64 bg-white shadow hidden md:block">
             <div className="px-8 py-4 flex">
               <div className="items-center justify-center flex">
@@ -118,6 +119,9 @@ export default async function RootLayout({
                 </ul>
               </div>
             )}
+          </nav>
+          <nav className="block md:hidden">
+            <MobileNavbar />
           </nav>
           {children}
         </div>
