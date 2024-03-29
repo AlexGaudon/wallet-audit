@@ -1,3 +1,28 @@
+export type TabTransactions = {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: Date;
+  updated: Date;
+  tab: string;
+  user: string;
+  amount: number;
+  type: "owes me" | "paid me" | "i owe" | "i paid";
+};
+
+export type Tab = {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: Date;
+  updated: Date;
+  person: string;
+  user: string;
+  expand: {
+    transactions: TabTransactions[];
+  };
+};
+
 export type MonthlyTopSpending = {
   id: string;
   collectionId: string;

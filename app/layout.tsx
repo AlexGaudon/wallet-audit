@@ -12,6 +12,7 @@ import {
   FilesIcon,
   LayoutDashboardIcon,
   LineChartIcon,
+  Table2Icon,
   TagsIcon,
 } from "lucide-react";
 
@@ -104,6 +105,15 @@ export default async function RootLayout({
                     >
                       <FileIcon />
                       <span className="ml-3">Transactions</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
+                      href="/tabs"
+                    >
+                      <Table2Icon />
+                      <span className="ml-3">Tabs</span>
                     </Link>
                   </li>
                   <li>

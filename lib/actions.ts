@@ -8,6 +8,8 @@ import {
   Category,
   Keyword,
   MonthlyTopSpending,
+  Tab,
+  TabTransactions,
   Transaction,
 } from "./definitions";
 import { getSession, initPocketbaseFromCookie } from "./pb";
@@ -120,6 +122,42 @@ export async function deleteCategory(categoryId: string) {
   await pb.collection("categories").delete(categoryId);
 
   revalidatePath("/categories");
+}
+
+export async function createTabTransaction(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  const tabId = formData.get("tabId");
+  const amount = formData.get("amount");
+  const type = formData.get("type");
+
+  console.log(tabId, amount, type);
+
+  const pb = await initPocketbaseFromCookie();
+
+  const session = await getSession();
+
+  try {
+    const transactionResult = await pb
+      .collection<TabTransactions>("tab_transactions")
+      .create({
+        user: session?.id,
+        tab: tabId,
+        amount: (amount as unknown as number) * 100,
+        type,
+      });
+    console.log(transactionResult);
+    await pb.collection<Tab>("tab").update(tabId as string, {
+      "transactions+": transactionResult.id,
+    });
+
+    revalidatePath("/tabs");
+  } catch (error) {
+    console.error(error);
+  }
+
+  return "ok";
 }
 
 export async function createKeyword(
