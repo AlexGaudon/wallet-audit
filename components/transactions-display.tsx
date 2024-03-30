@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
-import { useDebounceValue } from "usehooks-ts";
+import { useDebounceValue, useWindowSize } from "usehooks-ts";
 
+import { Paginator } from "./pagination";
 import {
   Dialog,
   DialogContent,
@@ -138,7 +139,9 @@ export function TransactionsDisplay({
   transactions,
   categories,
   categoryFiltered,
+  page,
 }: {
+  page: number;
   transactions: Transaction[];
   categories: Category[];
   categoryFiltered?: boolean;
@@ -146,11 +149,24 @@ export function TransactionsDisplay({
   const [term, setTerm] = useState("");
   const router = useRouter();
 
-  const [debouncedValue, setDebounced] = useDebounceValue<string>(term, 300);
+  const { height = 0 } = useWindowSize();
+
+  const [debouncedValue] = useDebounceValue<string>(term, 300);
 
   const [displayTransactions, setDisplayTransactions] = useState<Transaction[]>(
-    []
+    transactions.slice((page - 1) * 15, page * 15)
   );
+
+  useEffect(() => {
+    const count = Math.round(height / 55);
+
+    console.log("start: ", (page - 1) * count);
+    console.log("end: ", page * count);
+
+    setDisplayTransactions(
+      transactions.slice((page - 1) * count, page * count)
+    );
+  }, [height, transactions]);
 
   useEffect(() => {
     if (debouncedValue !== "") {
@@ -160,6 +176,18 @@ export function TransactionsDisplay({
 
   return (
     <>
+      <div className="flex">
+        <h1 className="font-bold text-2xl mb-2">Transactions</h1>
+        <div className="flex ml-auto my-auto">
+          <Paginator
+            url="transactions"
+            page={page}
+            totalPages={Math.ceil(
+              transactions.length / Math.round(height / 55)
+            )}
+          />
+        </div>
+      </div>
       <Table>
         <TableBody>
           <TableRow>
@@ -189,7 +217,7 @@ export function TransactionsDisplay({
               )}
             </TableCell>
           </TableRow>
-          {transactions.map((transaction) => (
+          {displayTransactions.map((transaction) => (
             <Transaction
               key={transaction.id}
               transaction={transaction}

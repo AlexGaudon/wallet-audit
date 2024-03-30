@@ -58,17 +58,8 @@ export default async function TransactionsPage({
 
   return (
     <main className="m-4 w-full">
-      <div className="flex">
-        <h1 className="font-bold text-2xl mb-2">Transactions</h1>
-        <div className="ml-auto">
-          {/* <Paginator
-            url="transactions"
-            page={pageAsNumber}
-            totalPages={transactions.totalPages}
-          /> */}
-        </div>
-      </div>
       <TransactionsDisplay
+        page={pageAsNumber}
         categoryFiltered={filters.category !== undefined}
         transactions={transactions}
         categories={categories}
