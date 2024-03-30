@@ -47,14 +47,9 @@ export default async function TransactionsPage({
     }
   }
 
-  // const transactions = await getTransactions(15, pageAsNumber, filters);
   const transactions = await getAllTransactions(filters);
 
   const categories = await pb.collection<Category>("categories").getFullList();
-
-  // if (transactions.items.length === 0 && transactions.totalPages > 0) {
-  //   redirect("/transactions/1");
-  // }
 
   return (
     <main className="m-4 w-full">

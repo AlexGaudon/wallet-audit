@@ -160,9 +160,6 @@ export function TransactionsDisplay({
   useEffect(() => {
     const count = Math.round(height / 55);
 
-    console.log("start: ", (page - 1) * count);
-    console.log("end: ", page * count);
-
     setDisplayTransactions(
       transactions.slice((page - 1) * count, page * count)
     );
