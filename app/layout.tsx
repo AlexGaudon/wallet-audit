@@ -6,9 +6,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 import Link from "next/link";
 
+import MobileNavbar from "@/components/mobile-nav";
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import {
-  FileIcon,
   FilesIcon,
   LayoutDashboardIcon,
   LineChartIcon,
@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen">
+        <div className="md:flex h-screen">
           <nav className="min-w-64 w-64 bg-white shadow hidden md:block">
             <div className="px-8 py-4 flex">
               <div className="items-center justify-center flex">
@@ -103,7 +103,7 @@ export default async function RootLayout({
                       className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
                       href="/transactions/1"
                     >
-                      <FileIcon />
+                      <FilesIcon />
                       <span className="ml-3">Transactions</span>
                     </Link>
                   </li>
@@ -128,6 +128,9 @@ export default async function RootLayout({
                 </ul>
               </div>
             )}
+          </nav>
+          <nav className="block md:hidden">
+            <MobileNavbar authed={pb.authStore.isValid} />
           </nav>
           {children}
         </div>

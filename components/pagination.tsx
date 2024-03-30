@@ -19,19 +19,19 @@ export function Paginator({
         disabled={!(page > 1)}
         onClick={() => {
           let newUrl = window.location.href;
-          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page-1}`)
-          router.replace(newUrl)
+          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page - 1}`);
+          router.replace(newUrl);
         }}
       >
         {"<"}
       </Button>
-      <span className="mx-2">Page {page}</span>
+      <span className="mx-2 my-auto">Page {page}</span>
       <Button
         disabled={!(page < totalPages)}
         onClick={() => {
           let newUrl = window.location.href;
-          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page+1}`)
-          router.replace(newUrl)
+          newUrl = newUrl.replace(`/${url}/${page}`, `/${url}/${page + 1}`);
+          router.replace(newUrl);
         }}
       >
         {">"}
