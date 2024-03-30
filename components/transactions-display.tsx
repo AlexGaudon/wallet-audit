@@ -148,11 +148,16 @@ export function TransactionsDisplay({
 
   const [debouncedValue, setDebounced] = useDebounceValue<string>(term, 300);
 
+  const [displayTransactions, setDisplayTransactions] = useState<Transaction[]>(
+    []
+  );
+
   useEffect(() => {
     if (debouncedValue !== "") {
       router.replace(`/transactions/1?name=${debouncedValue}`);
     }
   }, [debouncedValue]);
+
   return (
     <>
       <Table>

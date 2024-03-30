@@ -9,7 +9,6 @@ import Link from "next/link";
 import MobileNavbar from "@/components/mobile-nav";
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import {
-  FileIcon,
   FilesIcon,
   LayoutDashboardIcon,
   LineChartIcon,
@@ -103,7 +102,7 @@ export default async function RootLayout({
                       className="flex items-center px-8 py-2 text-gray-700 hover:bg-gray-200"
                       href="/transactions/1"
                     >
-                      <FileIcon />
+                      <FilesIcon />
                       <span className="ml-3">Transactions</span>
                     </Link>
                   </li>
@@ -121,7 +120,7 @@ export default async function RootLayout({
             )}
           </nav>
           <nav className="block md:hidden">
-            <MobileNavbar />
+            <MobileNavbar authed={pb.authStore.isValid} />
           </nav>
           {children}
         </div>

@@ -9,7 +9,7 @@ export default async function SignUpPage() {
   }
 
   return (
-    <main className="mx-auto w-1/3 mt-4">
+    <main className="mx-auto w-full mt-4">
       <SignUpForm />
     </main>
   );

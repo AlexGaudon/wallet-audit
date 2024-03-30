@@ -9,7 +9,7 @@ export default async function SignInPage() {
   }
 
   return (
-    <main className="mx-auto w-full lg:w-1/2 min-w-[500px] mt-4">
+    <main className="mx-auto w-full mt-4">
       <SignInForm />
     </main>
   );

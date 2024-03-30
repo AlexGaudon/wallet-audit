@@ -40,6 +40,19 @@ export async function getTransactions(
   });
 }
 
+export async function getAllTransactions(
+  filter: {
+    name?: string;
+  } = {}
+) {
+  const pb = await initPocketbaseFromCookie();
+  return await pb.collection<Transaction>("transactions").getFullList({
+    expand: "category",
+    sort: "-date",
+    filter: await buildFilterStringFromObject(filter),
+  });
+}
+
 export async function getCategorizedSpendingByDay(
   startDay: Date,
   days: number
