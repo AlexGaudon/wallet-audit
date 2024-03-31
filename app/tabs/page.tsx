@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tab } from "@/lib/definitions";
 import { getSession, initPocketbaseFromCookie } from "@/lib/pb";
 import { cn, displayAmount } from "@/lib/utils";
+import Link from "next/link";
 
 import { redirect } from "next/navigation";
 
@@ -24,10 +25,12 @@ export async function TabDetail(tab: Tab) {
   }
 
   return (
-    <Card className="grid grid-cols-2 mt-2 drop-shadow-lg">
+    <Card className="grid grid-cols-1 mt-2 drop-shadow-lg">
       <CardHeader>
         <div className="flex items-center">
-          <span className="text-2xl">{tab.person}</span>
+          <span className="text-2xl">
+            <Link href={`/tabs/${tab.id}`}>{tab.person}</Link>
+          </span>
         </div>
         <div>
           Balance:{" "}
@@ -66,7 +69,7 @@ export default async function Tabs() {
   return (
     <main className="m-4 w-full">
       <h1 className="font-bold text-2xl mb-2">Tabs</h1>
-      <div className="grid grid-cols-2 min-w-full w-full items-center justify-center space-x-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-w-full w-full items-center justify-center lg:space-x-2">
         {tabs.map((tab) => {
           return <TabDetail key={tab.id} {...tab} />;
         })}

@@ -1,0 +1,643 @@
+[
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "users_name",
+        "name": "name",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "users_avatar",
+        "name": "avatar",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "mimeTypes": [
+            "image/jpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/gif",
+            "image/webp"
+          ],
+          "thumbs": null,
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "protected": false
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "id = @request.auth.id",
+    "viewRule": "id = @request.auth.id",
+    "createRule": "",
+    "updateRule": "id = @request.auth.id",
+    "deleteRule": "id = @request.auth.id",
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "exceptEmailDomains": null,
+      "manageRule": null,
+      "minPasswordLength": 8,
+      "onlyEmailDomains": null,
+      "onlyVerified": false,
+      "requireEmail": false
+    }
+  },
+  {
+    "id": "uu01vp5dgzgr980",
+    "name": "categories",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "mqhv0lry",
+        "name": "name",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "scddgaik",
+        "name": "user",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "nyid6yn3",
+        "name": "keywords",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "217adsa5dd50cyk",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "3zl28r5q",
+        "name": "color",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_klbDMIF` ON `categories` (\n  `user`,\n  `name`\n)",
+      "CREATE UNIQUE INDEX `idx_tMZRGYx` ON `categories` (\n  `user`,\n  `color`\n)"
+    ],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": "",
+    "updateRule": "@request.auth.id = user.id",
+    "deleteRule": "@request.auth.id = user.id",
+    "options": {}
+  },
+  {
+    "id": "217adsa5dd50cyk",
+    "name": "keywords",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "bcaijpge",
+        "name": "user",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "q22vkoqi",
+        "name": "category",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "uu01vp5dgzgr980",
+          "cascadeDelete": true,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "o4n84j3o",
+        "name": "keyword",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_Ptk7x86` ON `keywords` (\n  `user`,\n  `category`,\n  `keyword`\n)"
+    ],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": "",
+    "updateRule": "@request.auth.id = user.id",
+    "deleteRule": "@request.auth.id = user.id",
+    "options": {}
+  },
+  {
+    "id": "6yk856nqkt3lg22",
+    "name": "tab",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "lofv3slt",
+        "name": "person",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "j980grsk",
+        "name": "user",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "omaiwicw",
+        "name": "transactions",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "5153vy839h8ikza",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": "@request.auth.id = user.id",
+    "updateRule": "@request.auth.id = user.id",
+    "deleteRule": "@request.auth.id = user.id",
+    "options": {}
+  },
+  {
+    "id": "5153vy839h8ikza",
+    "name": "tab_transactions",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "fa4acxck",
+        "name": "tab",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "6yk856nqkt3lg22",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "pucs9ltl",
+        "name": "user",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "akfkherj",
+        "name": "amount",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "u7xg0d5m",
+        "name": "type",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": ["owes me", "paid me", "I owe", "I paid"]
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": "@request.auth.id = user.id",
+    "updateRule": "@request.auth.id = user.id",
+    "deleteRule": "@request.auth.id = user.id",
+    "options": {}
+  },
+  {
+    "id": "k93ee6s6vll6lne",
+    "name": "transactions",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "3jg7uzaz",
+        "name": "user",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "jxlhuwmd",
+        "name": "category",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "uu01vp5dgzgr980",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "gwncszgy",
+        "name": "amount",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "ekcqghcm",
+        "name": "vendor",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "6hscan8r",
+        "name": "date",
+        "type": "date",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "jwarmnxw",
+        "name": "externalId",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_3VsS1L8` ON `transactions` (\n  `user`,\n  `externalId`\n)"
+    ],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": "@request.auth.id = user.id",
+    "updateRule": "@request.auth.id = user.id",
+    "deleteRule": "@request.auth.id = user.id",
+    "options": {}
+  },
+  {
+    "id": "a0x12v9mmkqeqhd",
+    "name": "monthly_spending_by_vendor",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "8z4wwavo",
+        "name": "user",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      },
+      {
+        "system": false,
+        "id": "csa9cn9d",
+        "name": "vendor",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      },
+      {
+        "system": false,
+        "id": "ojg72aqw",
+        "name": "transaction_count",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "uaorosyo",
+        "name": "total_amount",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "@request.auth.id = user",
+    "viewRule": "@request.auth.id = user",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT id, user, vendor, COUNT(id) AS transaction_count, SUM(amount) AS total_amount\nFROM (\n  SELECT (ROW_NUMBER() OVER ()) AS id, vendor, amount, user\n  FROM transactions\n  WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')\n    AND category NOT IN (\n      SELECT id FROM categories WHERE name IN ('Investments', 'Transfer')\n    )\n) AS subquery\nGROUP BY vendor\nORDER BY total_amount ASC\nLIMIT 5;\n"
+    }
+  },
+  {
+    "id": "qk160uv89h3g6z4",
+    "name": "top_spending_monthly",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "tz6b8l5z",
+        "name": "user",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "mc9ct4c4",
+        "name": "category",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "uu01vp5dgzgr980",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "l5jcuqeh",
+        "name": "amount",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "1h5dj2mt",
+        "name": "vendor",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "rws47mah",
+        "name": "date",
+        "type": "date",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "lhnnelse",
+        "name": "externalId",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "@request.auth.id = user.id",
+    "viewRule": "@request.auth.id = user.id",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT id, created, updated, user, category, amount, vendor, date, externalId\nFROM transactions\nWHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')\n  AND category NOT IN (\n    SELECT id FROM categories WHERE name IN ('Investments', 'Transfer')\n  )\nGROUP BY vendor\nORDER BY amount ASC\nLIMIT 5;"
+    }
+  },
+  {
+    "id": "kal1qzcz582f4mq",
+    "name": "total_spending_and_expenses",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "kmbmoliu",
+        "name": "total_amount",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT (ROW_NUMBER() OVER()) as id, SUM(t.amount) AS total_amount\nFROM transactions t\nJOIN categories c ON t.id = c.id\n"
+    }
+  }
+]
