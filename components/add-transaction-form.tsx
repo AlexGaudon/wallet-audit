@@ -26,7 +26,7 @@ export default function AddTransactionForm({ tabId }: { tabId: string }) {
   useEffect(() => {
     if (code?.startsWith("failed")) {
       toast({
-        description: "A keyword with this name already exists.",
+        description: code,
         variant: "destructive",
       });
     }
@@ -41,6 +41,7 @@ export default function AddTransactionForm({ tabId }: { tabId: string }) {
           action(formData);
 
           ref.current?.reset();
+          setType("");
         }}
         className="flex"
       >
@@ -53,11 +54,11 @@ export default function AddTransactionForm({ tabId }: { tabId: string }) {
           }}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Type" />
+            <SelectValue placeholder="Transaction type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={"paid me"}>Paid Me</SelectItem>
-            <SelectItem value={"owes me"}>Owes Me</SelectItem>
+            <SelectItem value={"paid me"}>paid me</SelectItem>
+            <SelectItem value={"owes me"}>owes me</SelectItem>
             <SelectItem value={"I owe"}>I owe</SelectItem>
             <SelectItem value={"I paid"}>I paid</SelectItem>
           </SelectContent>

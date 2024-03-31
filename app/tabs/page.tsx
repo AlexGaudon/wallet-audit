@@ -65,7 +65,6 @@ export default async function Tabs() {
     expand: "transactions",
   });
 
-  console.log(JSON.stringify(tabs, null, 2));
   return (
     <main className="m-4 w-full">
       <h1 className="font-bold text-2xl mb-2">Tabs</h1>

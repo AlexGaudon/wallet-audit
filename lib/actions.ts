@@ -132,7 +132,13 @@ export async function createTabTransaction(
   const amount = formData.get("amount");
   const type = formData.get("type");
 
-  console.log(tabId, amount, type);
+  if (type === "") {
+    return "failed: invalid type";
+  }
+
+  if (amount?.toString().length === 0) {
+    return "failed: amount cannot be 0";
+  }
 
   const pb = await initPocketbaseFromCookie();
 
@@ -147,7 +153,7 @@ export async function createTabTransaction(
         amount: (amount as unknown as number) * 100,
         type,
       });
-    console.log(transactionResult);
+
     await pb.collection<Tab>("tab").update(tabId as string, {
       "transactions+": transactionResult.id,
     });
@@ -231,8 +237,6 @@ export async function createCategory(
 
   const session = await getSession();
   const color = await getUnusedColor();
-
-  console.log("Color ", color);
 
   try {
     const res = await pb.collection<Category>("categories").create({

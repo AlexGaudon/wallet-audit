@@ -20,12 +20,14 @@ function TabTransactionList({
     <div className="w-full m-4">
       <Table>
         <TableHeader>
-          <TableHead>Type</TableHead>
-          <TableHead>Amount</TableHead>
-          <TableHead>Date</TableHead>
+          <TableRow>
+            <TableHead>Type</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Date</TableHead>
+          </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction) => {
+          {transactions?.map((transaction) => {
             return (
               <TableRow key={transaction.id}>
                 <TableCell>{transaction.type}</TableCell>
@@ -51,7 +53,6 @@ export default async function TabDetailPage({
     expand: "transactions",
   });
 
-  console.log(tab);
   return (
     <main className="m-4 w-full">
       <TabDetail {...tab} />

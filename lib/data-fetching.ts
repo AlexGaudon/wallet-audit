@@ -18,7 +18,6 @@ async function buildFilterStringFromObject(filter: {
       .getFullList();
     const category = categories.find((x) => x.name === filter.category);
 
-    console.log(category);
     return `category = "${category?.id}"`;
   }
 
