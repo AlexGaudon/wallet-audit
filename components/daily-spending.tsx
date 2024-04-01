@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import PeriodPicker from "./period-picker";
 
 export function DailySpending({
   realData,
@@ -61,7 +62,9 @@ export function DailySpending({
   }
 
   return (
-    <>
+    <div className="grid grid-cols-1 w-full">
+      <PeriodPicker />
+
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           {...dimensions}
@@ -80,6 +83,6 @@ export function DailySpending({
           {bars}
         </BarChart>
       </ResponsiveContainer>
-    </>
+    </div>
   );
 }

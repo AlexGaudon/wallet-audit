@@ -52,16 +52,11 @@ export async function getAllTransactions(
   });
 }
 
-export async function getCategorizedSpendingByDay(
-  startDay: Date,
-  days: number
-) {
+export async function getCategorizedSpendingByDay(startDay: Date) {
   const pb = await initPocketbaseFromCookie();
 
-  const endDate = new Date(startDay.setDate(startDay.getDate() + days));
-
-  const first = getFirstDayOfMonth(new Date());
-  const last = getLastDayOfMonth(new Date());
+  const first = getFirstDayOfMonth(startDay);
+  const last = getLastDayOfMonth(startDay);
 
   const transactions = await pb
     .collection<Transaction>("transactions")

@@ -4,10 +4,27 @@ import { initPocketbaseFromCookie } from "@/lib/pb";
 
 import { type Category } from "@/lib/definitions";
 
-export default async function Insights() {
+export default async function Insights({
+  searchParams,
+}: {
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+}) {
+  let period = new Date();
+
+  if (searchParams !== undefined) {
+    period.setDate(1);
+    if ("month" in searchParams) {
+      period.setMonth(Number(searchParams?.month) - 1);
+    }
+    if ("year" in searchParams) {
+      period.setFullYear(Number(searchParams?.year));
+    }
+  }
+
   const pb = await initPocketbaseFromCookie();
-  const lastWeek = new Date(new Date().setDate(1));
-  const data = await getCategorizedSpendingByDay(lastWeek, 7);
+  const data = await getCategorizedSpendingByDay(period);
 
   const categories = await pb.collection<Category>("categories").getFullList();
 

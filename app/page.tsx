@@ -67,12 +67,18 @@ const WalletAuditLanding = () => {
   );
 };
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+}) {
   const session = await getSession();
 
   return (
     <main className="w-full mx-2">
-      {session && <Dashboard />}
+      {session && <Dashboard searchParams={searchParams} />}
 
       {!session && <WalletAuditLanding />}
     </main>

@@ -5,9 +5,17 @@ import {
 import { initPocketbaseFromCookie } from "@/lib/pb";
 import { cn, displayAmount, getTextColorBasedOnBackground } from "@/lib/utils";
 
+import PeriodPicker from "./period-picker";
 import { Card, CardHeader } from "./ui/card";
 
-export async function TopSpending({ className }: { className?: string }) {
+export async function TopSpending({
+  className,
+  period,
+}: {
+  className?: string;
+  period: Date;
+}) {
+  // TODO: this needs to actually respect a certain period and not just always be the current month.
   const transactions = await getTopSpendingThisMonth();
 
   return (
@@ -37,12 +45,12 @@ export async function TopSpending({ className }: { className?: string }) {
 
 export async function CategorizedSpending({
   className,
+  period,
 }: {
   className?: string;
+  period: Date;
 }) {
-  const groups = await getCategorizedSpendingForPeriod(
-    new Date().toISOString()
-  );
+  const groups = await getCategorizedSpendingForPeriod(period.toISOString());
 
   const rawData = [];
 
@@ -97,24 +105,44 @@ export async function CategorizedSpending({
   );
 }
 
-export async function Dashboard() {
+export async function Dashboard({
+  searchParams,
+}: {
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+}) {
   const pb = await initPocketbaseFromCookie();
+
+  let period = new Date();
+
+  if (searchParams !== undefined) {
+    if ("month" in searchParams) {
+      period.setMonth(Number(searchParams?.month));
+    }
+    if ("year" in searchParams) {
+      period.setFullYear(Number(searchParams?.year));
+    }
+  }
+
+  console.log(searchParams);
 
   return (
     <>
       <div className="space-y-4">
-        <Totals />
+        <PeriodPicker />
+        <Totals period={period} />
         <div className="grid grid-cols-1 lg:grid-cols-2 space-x-4">
-          <CategorizedSpending className="w-full" />
-          <TopSpending className="hidden md:block" />
+          <CategorizedSpending className="w-full" period={period} />
+          <TopSpending className="hidden md:block" period={period} />
         </div>
       </div>
     </>
   );
 }
 
-export async function Totals() {
-  const data = await getCategorizedSpendingForPeriod(new Date().toISOString());
+export async function Totals({ period }: { period: Date }) {
+  const data = await getCategorizedSpendingForPeriod(period.toISOString());
 
   const income = data.get("Income")?.amount ?? 0;
 
@@ -123,7 +151,7 @@ export async function Totals() {
   for (const entry of Array.from(data.values())) {
     if (entry.name === "Investments") continue;
     if (entry.name === "Income") continue;
-    if (entry.name === "Transfer") continue;
+    if (entry.name === "Transfer ") continue;
     totalSpending += entry.amount;
   }
 
