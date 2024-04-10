@@ -125,16 +125,14 @@ export async function Dashboard({
     }
   }
 
-  console.log(searchParams);
-
   return (
     <>
       <div className="space-y-4">
         <PeriodPicker />
         <Totals period={period} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 space-x-4">
+        <div className="space-x-4 grid grid-cols-1 lg:grid-cols-2">
           <CategorizedSpending className="w-full" period={period} />
-          <TopSpending className="hidden md:block" period={period} />
+          <TopSpending className="md:block hidden" period={period} />
         </div>
       </div>
     </>
@@ -151,7 +149,7 @@ export async function Totals({ period }: { period: Date }) {
   for (const entry of Array.from(data.values())) {
     if (entry.name === "Investments") continue;
     if (entry.name === "Income") continue;
-    if (entry.name === "Transfer ") continue;
+    if (entry.name === "Transfer") continue;
     totalSpending += entry.amount;
   }
 
@@ -164,15 +162,15 @@ export async function Totals({ period }: { period: Date }) {
       <h1 className="font-bold text-3xl text-center">
         Total Income vs Expense
       </h1>
-      <h1 className="text-xl text-center">
+      <h1 className="text-center text-xl">
         Income: <span className="text-green-500">${displayAmount(income)}</span>
       </h1>
-      <h1 className="text-xl text-center">
+      <h1 className="text-center text-xl">
         Expenses:{" "}
         <span className="text-red-500">${displayAmount(totalSpending)}</span>
       </h1>
       <br />
-      <h1 className="text-xl text-center">
+      <h1 className="text-center text-xl">
         Total:
         <span
           className={cn({

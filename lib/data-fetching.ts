@@ -1,7 +1,7 @@
 import type { Category, Transaction } from "@/lib/definitions";
 import { initPocketbaseFromCookie } from "./pb";
 
-import { displayAmount, getFirstDayOfMonth, getLastDayOfMonth } from "./utils";
+import { displayAmount, getFirstDayOfMonth } from "./utils";
 
 async function buildFilterStringFromObject(filter: {
   name?: string;
@@ -56,12 +56,13 @@ export async function getCategorizedSpendingByDay(startDay: Date) {
   const pb = await initPocketbaseFromCookie();
 
   const first = getFirstDayOfMonth(startDay);
-  const last = getLastDayOfMonth(startDay);
+
+  console.log(first);
 
   const transactions = await pb
     .collection<Transaction>("transactions")
     .getFullList({
-      filter: `date >= "${first}" && date <= "${last}"`,
+      filter: `date >= "${first}" && date <= "${new Date()}"`,
       sort: "+date",
       expand: "category",
     });
